@@ -1,0 +1,79 @@
+{
+  "nodes": [
+    {
+      "id": "CT",
+      "size": 5,
+      "group": 1
+    },
+    {
+      "id": "FDA",
+      "size": 5,
+      "group": 2,
+      "children": [
+        {
+          "id": "FDA_1",
+          "size": 1
+        },
+        {
+          "id": "FDA_2",
+          "size": 1
+        }
+        {
+          "id": "FDA_3",
+          "size": 1
+        }
+      ]
+    },
+    {
+      "id": "pmid1",
+      "size": 10,
+      "group": 3
+    },
+    {
+      "id": "pmid2",
+      "size": 15,
+       "group": 4
+     },
+    {
+      "id": "patent",
+      "size": 5,
+      "group": 5
+    },
+    {
+      "id": "grant",
+      "size": 5,
+      "group": 6
+    },
+    {
+      "id": "inst",
+      "size": 5,
+      "group": 7
+    },
+    {
+      "id": "author",
+      "size": 5,
+      "group": 8
+    },
+    {
+      "id": "drug",
+      "size": 5,
+      "group": 9
+    }
+  ],
+  "links": [
+    {"source": "drug", "target": "CT", "value": 1},
+    {"source": "drug", "target": "FDA", "value": 1},
+    {"source": "drug", "target": "patent", "value": 1},
+    {"source": "drug", "target": "pmid1", "value": 1},
+    {"source": "CT", "target": "pmid1", "value": 1},
+    {"source": "FDA", "target": "pmid1", "value": 1},
+    {"source": "patent", "target": "pmid1", "value": 1},
+    {"source": "pmid1", "target": "pmid2", "value": 1},
+    {"source": "pmid1", "target": "author", "value": 1},
+    {"source": "pmid1", "target": "grant", "value": 1},
+    {"source": "pmid1", "target": "inst", "value": 1},
+    {"source": "pmid2", "target": "author", "value": 1},
+    {"source": "pmid2", "target": "grant", "value": 1},
+    {"source": "pmid2", "target": "inst", "value": 1}
+  ]
+}

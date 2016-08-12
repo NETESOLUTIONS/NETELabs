@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+.node {
+    stroke: #fff;
+    stroke-width: 1.5px;
+}
+.link {
+    stroke: #999;
+    stroke-opacity: .6;
+}
+.node text {
+  font: 12px helvetica;
+}
+</style>
+
+<div class="ui-widget">
+    <input id="search">
+    <button type="button" onclick="searchNode()">Search</button>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.0.min.js"></script>
+<script type='text/javascript' src="http://code.jquery.com/ui/1.11.0/jquery-ui.min.js"> </script>
+<script src="https://d3js.org/d3.v3.min.js"></script>
+<link type="text/css" href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css" rel="stylesheet" />
+
+<script>
+
+$(document).ready(function () {
+    //Constants for the SVG
+    var width = 900,
+        height = 600;
+
+    var color = d3.scale.category20();
+
+    //Set up the force layout
+    var force = d3.layout.force()
+        .charge(-120)
+        .linkDistance(80)
+        .gravity(.05)
+        .size([width, height]);
+
+    //Append a SVG to the body of the html page. Assign this SVG as an object to svg
+    var svg = d3.select("body").append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+    var node_drag = d3.behavior.drag()
+        .on("dragstart", dragstart)
+        .on("drag", dragmove)
+        .on("dragend", dragend);
+
+    function dragstart(d, i) {
+        force.stop() // stops the force auto positioning before you start dragging
+    }
+
+    function dragmove(d, i) {
+        d.px += d3.event.dx;
+        d.py += d3.event.dy;
+        d.x += d3.event.dx;
+        d.y += d3.event.dy;
+    }
+
+    function dragend(d, i) {
+        d.fixed = true; // of course set the node to fixed so the force doesn't include the node in its auto positioning stuff
+        force.resume();
+    }
+
+    function releasenode(d) {
+        d.fixed = false; // of course set the node to fixed so the force doesn't include the node in its auto positioning stuff
+        //force.resume();
+    }
+
+    d3.json("test10node.json", function(error, graph) {
+        if (error) throw error;
+        console.log(graph);
+
+        var nodeMap = {};
+        graph.nodes.forEach(function(x) { nodeMap[x.id] = x; });
+        graph.links = graph.links.map(function(x) {
+            return {
+                source: nodeMap[x.source],
+                target: nodeMap[x.target],
+                value: x.value
+            };
+        });
+
+        //Creates the graph data structure out of the json data
+        force.nodes(graph.nodes)
+            .links(graph.links)
+            .start();
+
+        //Create all the line svgs but without locations yet
+        var link = svg.selectAll(".link")
+            .data(graph.links)
+            .enter().append("line")
+            .attr("class", "link")
+            .style("stroke-width", function (d) {
+            return Math.sqrt(d.value);
+        });
+
+        //Do the same with the circles for the nodes - no
+        var node = svg.selectAll(".node")
+            .data(graph.nodes)
+            .enter().append("g")
+            .attr("class", "node")
+            .on('dblclick', connectedNodes)
+            .call(node_drag); //Added code
+
+        node.append("circle")
+            .attr("r", function(d) { return d.size; })
+            .style("fill", function (d) { return color(d.group); });
+
+        node.append("text")
+             .attr("dx", 10)
+             .attr("dy", ".25em")
+             .text(function(d) { return d.id; })
+             .style("stroke", "gray");
+
+
+        //Now we are giving the SVGs co-ordinates - the force layout is generating the co-ordinates which this code is using to update the attributes of the SVG elements
+        force.on("tick", function () {
+            link.attr("x1", function (d) {
+                return d.source.x;
+            })
+                .attr("y1", function (d) {
+                return d.source.y;
+            })
+                .attr("x2", function (d) {
+                return d.target.x;
+            })
+                .attr("y2", function (d) {
+                return d.target.y;
+            });
+
+            node.attr("cx", function (d) {
+                return d.x;
+            })
+                .attr("cy", function (d) {
+                return d.y;
+            });
+
+            d3.selectAll("circle").attr("cx", function (d) {
+                return d.x;
+            })
+                .attr("cy", function (d) {
+                return d.y;
+            });
+
+            d3.selectAll("text").attr("x", function (d) {
+                return d.x;
+            })
+                .attr("y", function (d) {
+                return d.y;
+            });
+        });
+
+        //Toggle stores whether the highlighting is on
+        var toggle = 0;
+
+        //Create an array logging what is connected to what
+        var linkedByIndex = {};
+        for (i = 0; i < graph.nodes.length; i++) {
+            linkedByIndex[i + "," + i] = 1;
+        };
+
+        graph.links.forEach(function (d) {
+            linkedByIndex[d.source.index + "," + d.target.index] = 1;
+        });
+
+        //This function looks up whether a pair are neighbours
+        function neighboring(a, b) {
+            return linkedByIndex[a.index + "," + b.index];
+        };
+
+        function connectedNodes() {
+            if (toggle == 0) {
+                //Reduce the opacity of all but the neighbouring nodes
+                d = d3.select(this).node().__data__;
+                node.style("opacity", function (o) {
+                    return neighboring(d, o) | neighboring(o, d) ? 1 : 0.1;
+                });
+                link.style("opacity", function (o) {
+                    return d.index==o.source.index | d.index==o.target.index ? 1 : 0.1;
+                });
+                //Reduce the op
+                toggle = 1;
+            }
+            else {
+                //Put them back to opacity=1
+                node.style("opacity", 1);
+                link.style("opacity", 1);
+                toggle = 0;
+            }
+        };
+
+        var optArray = [];
+        for (var i = 0; i < graph.nodes.length - 1; i++) {
+            optArray.push(graph.nodes[i].id);
+        };
+
+        optArray = optArray.sort();
+
+        $("#search").autocomplete({
+              source: optArray
+        });
+
+        function searchNode() {
+            //find the node
+            var selectedVal = document.getElementById('search').value;
+            var node = svg.selectAll(".node");
+            if (selectedVal == "none") {
+                node.style("stroke", "white").style("stroke-width", "1");
+            }
+            else {
+                var selected = node.filter(function (d, i) {
+                    return d.id != selectedVal;
+                });
+                selected.style("opacity", "0");
+                var link = svg.selectAll(".link")
+                link.style("opacity", "0");
+                d3.selectAll(".node, .link").transition()
+                    .duration(5000)
+                    .style("opacity", 1);
+            }
+        };
+
+        window.searchNode = searchNode;
+    });
+});
+</script>
