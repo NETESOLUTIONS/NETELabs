@@ -116,6 +116,6 @@ date > endtime.txt
 date
 
 # Send log via email.
-psql -d pardi -c 'select * from update_log_wos;' | mail -s "WOS Weekly Update Log" lingtian@nete.com george@nete.com shixin@nete.com samet@nete.com mtoubasi@nete.com
+psql -d pardi -c 'select * from update_log_wos;' | mail -s "WOS Weekly Update Log" username@nete.com
 
 printf "\n\n"
