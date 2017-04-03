@@ -1,6 +1,27 @@
 # coding=utf-8
 '''
-This is a parser to extract the WOS XML publications data and generate 7 CSV files:
+Copyright 2017, NET ESOLUTIONS CORPORATION (NETE), McLean, VA.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without 
+restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom 
+the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE 
+AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+This Python 2.7 parser may be useful for folks who lease Web of Science data. A version has been successfully used to load the entire Web of Science Core Collection (over
+60 million publication records alone). Clarivate Analytics (formerly Thomson-Reuters) typically distributes its raw data as XML on a portable hard drive and makes its weekly updates 
+available through ftp. The workflow to use this parser is to split a large XML file into smaller ones. For each split product containing multiple publication records, this script loops 
+through each record, extracts fields of interest and copies them into 9 csv files. These csv files are then loaded into a PostgreSQL database. Parameters supplied to this script are the 
+input file and the name of the directory into which the csv files are copied. 
+
+Usage: python wos_xml_parser.py -filename file_name -csv_dir csv_file_directory
+
+
+This parser extracts  WOS XML publications data and generate 7 CSV files:
     1.	wos_xml_file_name_publication.csv
     2.	wos_xml_file_name_reference.csv
     3.	wos_xml_file_name_grant.csv
@@ -11,13 +32,13 @@ This is a parser to extract the WOS XML publications data and generate 7 CSV fil
     8.	wos_xml_file_name_keyword.csv
     9.	wos_xml_file_name_title.csv
 
-Usage: python wos_xml_parser.py -filename file_name -csv_dir csv_file_directory
+
 
 Author: Shixin Jiang, Lingtian "Lindsay" Wan
 Create Date: 05/11/2016
 Modified: 05/23/2016, Lindsay Wan, added documentation
+Modified: 3/30/2017, Samet Keserci and George Chacko added comments and a README
 '''
-
 
 import re
 import csv
