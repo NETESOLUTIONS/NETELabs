@@ -1,5 +1,6 @@
 #!/bin/sh
 # This script updates the Web of Science (WOS) tables on an ETL process.
+# Authors Shixin Jiang and Lingtian 'Lindsay' Wan.
 # Specifically:
 # 1. Get files (WOS_CORE and .del) downloaded but not updated yet;
 # 2. Unzip .del files and combine WOS ids in these files to a single file;
