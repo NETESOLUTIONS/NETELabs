@@ -1,3 +1,6 @@
+# WoS XML splitter. Authors: Shixin Jiang and Lingtian Wan
+#
+
 import os
 import sys
 from xml.sax import parse
