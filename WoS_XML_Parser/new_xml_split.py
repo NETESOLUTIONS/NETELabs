@@ -4,7 +4,7 @@
 
 # 05/05/2017. While we have no record or notes of a fork, this new_xml_split.py script is an exact copy of
 # https://gist.github.com/nicwolff/b4da6ec84ba9c23c8e59
-# therefore, we acknowledge Nic Wolff's prior contribution with thanks. 
+# therefore, we acknowledge Nic Wolff's prior art with many thanks. 
 
 import os
 import sys
