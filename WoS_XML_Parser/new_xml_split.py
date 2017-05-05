@@ -8,7 +8,6 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 # This script splits Web of Science XML files
-# Author: Shixin Jiang, Lingtian "Lindsay" Wan
 # Create Date: circa June 2016
 # Modified: 3/30/2017, Samet Keserci and George Chacko added comments and a README# 
 
