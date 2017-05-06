@@ -1,6 +1,5 @@
 # This script splits Web of Science XML files and is used along with thr parser in this folder.
 # Creation Date: circa June 2016
-# Modified: 3/30/2017, Samet Keserci and George Chacko added comments and a README# 
 
 # 05/05/2017. This script, new_xml_split.py, is an exact copy of
 # https://gist.github.com/nicwolff/b4da6ec84ba9c23c8e59.
