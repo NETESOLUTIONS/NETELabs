@@ -2,9 +2,9 @@
 # Creation Date: circa June 2016
 # Modified: 3/30/2017, Samet Keserci and George Chacko added comments and a README# 
 
-# 05/05/2017. While we have no record or notes of a fork, this new_xml_split.py script is an exact copy of
-# https://gist.github.com/nicwolff/b4da6ec84ba9c23c8e59
-# therefore, we acknowledge Nic Wolff's prior art with many thanks. 
+# 05/05/2017. This script, new_xml_split.py, is an exact copy of
+# https://gist.github.com/nicwolff/b4da6ec84ba9c23c8e59.
+# We acknowledge Nic Wolff's prior art with many thanks and make no claim to having authored it.
 
 import os
 import sys
