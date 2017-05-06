@@ -1,9 +1,9 @@
-# This script splits Web of Science XML files and is used along with thr parser in this folder.
-# Creation Date: circa June 2016
+# This script is used to split Web of Science XML files and its ouptut is used by the accompanying 
+# parser. Creation Date: circa June 2016
 
 # 05/05/2017. This script, new_xml_split.py, is an exact copy of
 # https://gist.github.com/nicwolff/b4da6ec84ba9c23c8e59.
-# We acknowledge Nic Wolff's prior art with many thanks and make no claim to having authored it.
+# We acknowledge Nic Wolff's prior art with many thanks and make no claim to authorship.
 
 import os
 import sys
