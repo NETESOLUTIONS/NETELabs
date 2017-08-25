@@ -10,4 +10,8 @@ available as a collection of XML files. The procedure used at NETE involves spli
 Several projects are currently active and involve collaborators from outside NETE. At present, they are mostly centered around the use of administrative, bibliographic, clinical trials, and other public records to enable studies of biomedical research in particular. The work of [Williams et al](http://dx.doi.org/10.1016/j.cell.2015.09.007) is inspirational in this regard and  and a related NETE Labs project is being archived on the [Open Science Framework](https://osf.io/) and will become public once a manuscript is submitted Relevant key words/phrases are 'bibliometrics', 'research evaluation', 'linked datasets', 'administrative records', 'patents', 'clinical trials', 'clinical guidelines', 'research awards', and 'researcher profiling'.
 
 
-http://docs.google.com/gview?url=<https://github.com/NETESOLUTIONS/PARDI_WoS/blob/master/WOS_Annual_Load/wos_update_processing.pdf>&embedded=true
+<object data="https://github.com/NETESOLUTIONS/PARDI_WoS/blob/master/WOS_Annual_Load/wos_update_processing.pdf" type="application/pdf" width="700px" height="700px">
+    <embed src="https://github.com/NETESOLUTIONS/PARDI_WoS/blob/master/WOS_Annual_Load/wos_update_processing.pdf">
+        This browser does not support PDFs. Please download the PDF to view it: <a href="https://github.com/NETESOLUTIONS/PARDI_WoS/blob/master/WOS_Annual_Load/wos_update_processing.pdf">Download PDF</a>.</p>
+    </embed>
+</object>
