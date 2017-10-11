@@ -7,8 +7,7 @@
 
 
 # Record start time
-printf 'STARTED:\t\t\t'
-date
+printf 'STARTED:\t\t\t'; date
 
 # Take in user input for output directory for files
 output_dir=$1
@@ -26,10 +25,9 @@ done
 data_sources="cg ct" #derwent fda uspto wos
 for prefix in $data_sources; do
         pg_dump pardi --section=pre-data --section=data --no-owner --no-privileges --no-tablespaces -t $prefix'_*' $exclude_string > $output_dir'/'$prefix'_dump.sql'
-        printf 'FILE '$output_dir'/'$prefix'_dump.sql CREATED:\t'
-        date
+        gzip $output_dir'/'$prefix'_dump.sql'
+        printf 'FILE '$output_dir'/'$prefix'_dump.sql CREATED AND COMPRESSED:\t'; date
 done
 
 # Record end time
-printf 'FINISHED:\t\t\t'
-date
+printf 'FINISHED:\t\t\t'; date
