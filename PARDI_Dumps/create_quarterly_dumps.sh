@@ -22,7 +22,7 @@ for table in $exclude_tables ; do
 done
 
 # Build the different dump files
-data_sources="cg ct fda derwent"# wos"
+data_sources="cg ct fda derwent"# wos
 for prefix in $data_sources; do
         pg_dump pardi --section=pre-data --section=data --no-owner --no-privileges --no-tablespaces -t $prefix'_*' $exclude_string > $output_dir'/'$prefix'_dump.sql'
         gzip $output_dir'/'$prefix'_dump.sql'
