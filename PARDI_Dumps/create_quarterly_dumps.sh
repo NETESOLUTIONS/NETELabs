@@ -27,7 +27,10 @@ for prefix in $data_sources; do
         pg_dump pardi --section=pre-data --section=data --no-owner --no-privileges --no-tablespaces -t $prefix'_*' $exclude_string > $output_dir'/'$prefix'_dump.sql'
         echo '...SQL dump script created...'
         gzip $output_dir'/'$prefix'_dump.sql' &
-        wait
+        #send messages to prevent timeouts
+        while [ $(ps $! | grep $!) ]; do
+          sleep 600; echo 'still working to compress '$prefix' data...'
+        done
         printf 'FILE '$output_dir'/'$prefix'_dump.sql CREATED AND COMPRESSED:\t'; date
 done
 
