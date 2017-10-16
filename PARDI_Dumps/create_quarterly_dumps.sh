@@ -25,7 +25,9 @@ done
 data_sources="cg ct fda derwent"
 for prefix in $data_sources; do
         pg_dump pardi --section=pre-data --section=data --no-owner --no-privileges --no-tablespaces -t $prefix'_*' $exclude_string > $output_dir'/'$prefix'_dump.sql'
-        gzip $output_dir'/'$prefix'_dump.sql'
+        echo '...SQL dump script created...'
+        gzip $output_dir'/'$prefix'_dump.sql' &
+        wait
         printf 'FILE '$output_dir'/'$prefix'_dump.sql CREATED AND COMPRESSED:\t'; date
 done
 
