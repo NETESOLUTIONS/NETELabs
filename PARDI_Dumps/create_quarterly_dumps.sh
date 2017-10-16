@@ -28,7 +28,7 @@ for prefix in $data_sources; do
         echo '...SQL dump script created...'
         gzip $output_dir'/'$prefix'_dump.sql' &
         #send messages to prevent timeouts
-        while [ $(ps $! | grep $!) ]; do
+        while [ "$(ps $! | grep $!)" ]; do
           sleep 600; echo 'still working to compress '$prefix' data...'
         done
         printf 'FILE '$output_dir'/'$prefix'_dump.sql CREATED AND COMPRESSED:\t'; date
