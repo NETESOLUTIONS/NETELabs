@@ -13,7 +13,7 @@ printf 'STARTED:\t\t\t'; date
 output_dir=$1
 
 # Manually build and maintain a list of exclusion tables for the quarterly dump process. These are the tables with matching prefixes for the main data sources that we do not want pushed to the client.
-exclude_tables="cg_ref_counts derwent_familyid derwent_patents_filterred_to_nih_support fda_drug_patents fda_purple_cber_book fda_purple_cder_book wos_patent_mapping wos_pmid_manual_mapping wos_pmid_mapping"
+exclude_tables="cg_ref_counts derwent_familyid derwent_patents_filterred_to_nih_support fda_drug_patents fda_purple_cber_book fda_purple_cder_book"
 exclude_string=""
 
 # Build the exclusion string (this sets exclusion options for the given tables and their sequences on the pg_dump command).
