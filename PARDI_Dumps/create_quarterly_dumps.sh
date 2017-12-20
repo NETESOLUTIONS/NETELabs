@@ -21,8 +21,8 @@ for table in $exclude_tables ; do
         exclude_string=$exclude_string'-T '$table' -T '$table'*_seq '
 done
 
-# Build the different dump files
-data_sources="cg ct fda derwent wos"
+# Build the different dump files -- temp change as CG operation is running, readd following its completion
+data_sources="ct fda derwent wos"
 for prefix in $data_sources; do
         pg_dump pardi --section=pre-data --section=data --no-owner --no-privileges --no-tablespaces -t $prefix'_*' $exclude_string > $output_dir'/'$prefix'_dump.sql' &
         #send messages to prevent timeouts
