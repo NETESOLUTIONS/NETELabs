@@ -1,0 +1,53 @@
+# VJ Davey
+# SQL script to generate weekly WOS csv data.
+# How to use:
+#  bash generate_wos_weeklies.sh "{date_string}"  -- where date_string is some string in the format MM-DD-YYYY
+
+
+#set aside the most recent wos ids that have yet to be shared
+date_string=$1; target_dir=$2
+echo "building files after date ${date_string}"
+psql -c "DROP TABLE IF EXISTS temp_weekly_wos_ids;"
+psql -c "SELECT source_id INTO temp_weekly_wos_ids FROM wos_publications WHERE last_modified_date > '${date_string}';"
+
+#pull the data from each wos_table with the ids in question
+psql -c "COPY (SELECT id,a.source_id,abstract_text,source_filename\
+      FROM wos_abstracts a INNER JOIN temp_weekly_wos_ids b on a.source_id=b.source_id)\
+      TO '${target_dir}/cur_date_wos_abstract_update.csv' CSV HEADER;"
+
+psql -c "COPY (SELECT id,a.source_id,address_name,organization,sub_organization,city,\
+      country,zip_code,source_filename\
+      FROM wos_addresses a INNER JOIN temp_weekly_wos_ids b on a.source_id=b.source_id)\
+      TO '${target_dir}/cur_date_wos_address_update.csv' CSV HEADER;"
+
+psql -c "COPY (SELECT id,a.source_id,full_name,last_name,first_name,seq_no,address_seq,\
+      address,email_address,address_id,dais_id,r_id,source_filename\
+      FROM wos_authors a INNER JOIN temp_weekly_wos_ids b on a.source_id=b.source_id)\
+      TO '${target_dir}/cur_date_wos_author_update.csv' CSV HEADER;"
+
+psql -c "COPY (SELECT id,a.source_id,document_id,document_id_type,source_filename\
+      FROM wos_document_identifiers a INNER JOIN temp_weekly_wos_ids b on a.source_id=b.source_id)\
+      TO '${target_dir}/cur_date_wos_dois_update.csv' CSV HEADER;"
+
+psql -c "COPY (SELECT id,a.source_id,grant_number,grant_organization,funding_ack,source_filename\
+      FROM wos_grants a INNER JOIN temp_weekly_wos_ids b on a.source_id=b.source_id)\
+      TO '${target_dir}/cur_date_wos_grant_update.csv' CSV HEADER;"
+
+psql -c "COPY (SELECT id,a.source_id,keyword,source_filename\
+      FROM wos_keywords a INNER JOIN temp_weekly_wos_ids b on a.source_id=b.source_id)\
+      TO '${target_dir}/cur_date_wos_keyword_update.csv' CSV HEADER;"
+
+psql -c "COPY (SELECT begin_page,created_date,document_title,document_type,edition,end_page,end_page,\
+      has_abstract,id,issue,language,last_modified_date,publication_date,publication_year,\
+      publisher_address,publisher_name,source_filename,a.source_id,source_title,source_type,volume\
+      FROM wos_publications a INNER JOIN temp_weekly_wos_ids b on a.source_id=b.source_id)\
+      TO '${target_dir}/cur_date_wos_publication_update.csv' CSV HEADER;"
+
+psql -c "COPY (SELECT wos_reference_id,a.source_id,cited_source_uid,cited_title,cited_work,cited_author,\
+      cited_year,cited_page,created_date,last_modified_date,source_filename\
+      FROM wos_references a INNER JOIN temp_weekly_wos_ids b on a.source_id=b.source_id)\
+      TO '${target_dir}/cur_date_wos_reference_update.csv' CSV HEADER;"
+
+psql -c "COPY (SELECT id,a.source_id,title,type,source_filename\
+      FROM wos_titles a INNER JOIN temp_weekly_wos_ids b on a.source_id=b.source_id)\
+      TO '${target_dir}/cur_date_wos_title_update.csv' CSV HEADER;"
