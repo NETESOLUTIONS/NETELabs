@@ -14,47 +14,50 @@ psql -c "SELECT source_id INTO temp_weekly_wos_ids FROM wos_publications WHERE l
 # Pull the data from each wos_table with the ids in question
 psql -c "COPY (SELECT id,a.source_id,abstract_text,source_filename\
       FROM wos_abstracts a INNER JOIN temp_weekly_wos_ids b on a.source_id=b.source_id)\
-      TO '${target_dir}/${prefix}_wos_abstract_update.csv' CSV HEADER;"
+      TO STDOUT CSV HEADER;" > ${target_dir}/${prefix}_wos_abstract_update.csv
 
 psql -c "COPY (SELECT id,a.source_id,address_name,organization,sub_organization,city,\
       country,zip_code,source_filename\
       FROM wos_addresses a INNER JOIN temp_weekly_wos_ids b on a.source_id=b.source_id)\
-      TO '${target_dir}/${prefix}_wos_address_update.csv' CSV HEADER;"
+      TO STDOUT CSV HEADER;" > ${target_dir}/${prefix}_wos_address_update.csv
 
 psql -c "COPY (SELECT id,a.source_id,full_name,last_name,first_name,seq_no,address_seq,\
       address,email_address,address_id,dais_id,r_id,source_filename\
       FROM wos_authors a INNER JOIN temp_weekly_wos_ids b on a.source_id=b.source_id)\
-      TO '${target_dir}/${prefix}_wos_author_update.csv' CSV HEADER;"
+      TO STDOUT CSV HEADER;" > ${target_dir}/${prefix}_wos_author_update.csv
 
 psql -c "COPY (SELECT id,a.source_id,document_id,document_id_type,source_filename\
       FROM wos_document_identifiers a INNER JOIN temp_weekly_wos_ids b on a.source_id=b.source_id)\
-      TO '${target_dir}/${prefix}_wos_dois_update.csv' CSV HEADER;"
+      TO STDOUT CSV HEADER;" > ${target_dir}/${prefix}_wos_dois_update.csv
 
 psql -c "COPY (SELECT id,a.source_id,grant_number,grant_organization,funding_ack,source_filename\
       FROM wos_grants a INNER JOIN temp_weekly_wos_ids b on a.source_id=b.source_id)\
-      TO '${target_dir}/${prefix}_wos_grant_update.csv' CSV HEADER;"
+      TO STDOUT CSV HEADER;" > ${target_dir}/${prefix}_wos_grant_update.csv
 
 psql -c "COPY (SELECT id,a.source_id,keyword,source_filename\
       FROM wos_keywords a INNER JOIN temp_weekly_wos_ids b on a.source_id=b.source_id)\
-      TO '${target_dir}/${prefix}_wos_keyword_update.csv' CSV HEADER;"
+      TO STDOUT CSV HEADER;" > ${target_dir}/${prefix}_wos_keyword_update.csv
 
 psql -c "COPY (SELECT begin_page,created_date,document_title,document_type,edition,end_page,end_page,\
       has_abstract,id,issue,language,last_modified_date,publication_date,publication_year,\
       publisher_address,publisher_name,source_filename,a.source_id,source_title,source_type,volume\
       FROM wos_publications a INNER JOIN temp_weekly_wos_ids b on a.source_id=b.source_id)\
-      TO '${target_dir}/${prefix}_wos_publication_update.csv' CSV HEADER;"
+      TO STDOUT CSV HEADER;" > ${target_dir}/${prefix}_wos_publication_update.csv
 
 psql -c "COPY (SELECT wos_reference_id,a.source_id,cited_source_uid,cited_title,cited_work,cited_author,\
       cited_year,cited_page,created_date,last_modified_date,source_filename\
       FROM wos_references a INNER JOIN temp_weekly_wos_ids b on a.source_id=b.source_id)\
-      TO '${target_dir}/${prefix}_wos_reference_update.csv' CSV HEADER;"
+      TO STDOUT CSV HEADER;" > ${target_dir}/${prefix}_wos_reference_update.csv
 
 psql -c "COPY (SELECT id,a.source_id,title,type,source_filename\
       FROM wos_titles a INNER JOIN temp_weekly_wos_ids b on a.source_id=b.source_id)\
-      TO '${target_dir}/${prefix}_wos_title_update.csv' CSV HEADER;"
+      TO STDOUT CSV HEADER;" > ${target_dir}/${prefix}_wos_title_update.csv
 
 # Round up delete files
 echo "del_source_id" > ${target_dir}/${prefix}_wos_delete.csv
 awk -F ',' '{print $1":"$2}' ${work_dir}/*.del >> ${target_dir}/${prefix}_wos_delete.csv
 
 echo "Weekly WOS CSV files built."
+
+# Set permissions on generated files
+chmod 775 ${target_dir}/*
