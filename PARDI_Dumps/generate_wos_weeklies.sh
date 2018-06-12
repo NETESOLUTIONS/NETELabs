@@ -1,7 +1,7 @@
 # VJ Davey
 # SQL script to generate weekly WOS csv data.
 # How to use:
-#  bash generate_wos_weeklies.sh "{date_string}"  -- where date_string is some string in the format MM-DD-YYYY
+#  bash generate_wos_weeklies.sh "{date_string}" target_dir work_dir  -- where date_string is some string in the format YYYY-MM-DD
 
 
 # Set aside the most recent wos ids that have yet to be shared
