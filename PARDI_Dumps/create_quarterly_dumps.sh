@@ -33,10 +33,7 @@ fi
 cd "${output_dir}"
 echo -e "\n## Running under ${USER}@${HOSTNAME} in ${PWD} ##\n"
 
-# Record start time
-echo "STARTED: $(date)"
-
-## COMPILE PREVIOUS CSVs INTO A NEW QUARTERLY ARCHIVE
+echo "### Compiling previous WoS CSVs into a new quarterly archive ###"
 cur_qtr=$(python -c "import datetime; import math; print \"%d_Q%d\"%(2018,int(math.ceil(datetime.date.today().month/3.0)))")
 # Compile WOS records
 wos_weeklies=${output_dir}/weekly_updates/WOS
@@ -48,7 +45,7 @@ for table in ${derwent_export_tables}; do
 done
 #rm ${wos_weeklies}/*
 
-# Compile Derwent files
+echo "### Compiling previous Derwent CSVs into a new quarterly archive ###"
 derwent_weeklies=${output_dir}/weekly_updates/DERWENT
 derwent_quarter_archive=${output_dir}/past_quarter_archive/DERWENT
 rm -f ${derwent_quarter_archive}/${cur_qtr}_derwent_*_archive.csv
