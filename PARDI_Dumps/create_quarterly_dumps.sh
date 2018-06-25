@@ -50,7 +50,7 @@ echo "### Compiling previous Derwent CSVs into a new quarterly archive ###"
 derwent_weeklies=${export_base_dir}/weekly_updates/DERWENT
 derwent_quarter_archive=${export_base_dir}/past_quarter_archive/DERWENT
 rm -f ${derwent_quarter_archive}/${cur_qtr}_derwent_*_archive.csv
-derwent_export_tables="agent assignee citation examiner inventor litcitation patent"
+derwent_export_tables="agent assignee citation examiner inventor litcitations patent"
 for table in ${derwent_export_tables}; do
   echo "Archiving Derwent ${table} weekly updates..."
   cat ${derwent_weeklies}/*${table}_update.csv >> ${derwent_quarter_archive}/${cur_qtr}_derwent_${table}_archive.csv
@@ -76,10 +76,10 @@ for prefix in $data_sources; do
 
   # Generate pg_dump file
   pg_dump --section=pre-data --section=data --no-owner --no-privileges --no-tablespaces -t ${prefix}_* \
-          $exclude_string | gzip > ${baseline_dump_dir}/${prefix}_dump.sql.gz
-#  while [ "$(ps $! | grep $!)" ]; do
-#    sleep 15; echo "still working to generate ${prefix} sql dump script ..."
-#  done
+          $exclude_string | gzip > ${baseline_dump_dir}/${prefix}_dump.sql.gz &
+  while [ "$(ps $! | grep $!)" ]; do
+    sleep 15; echo "still working to generate ${prefix} sql dump script ..."
+  done
   echo "FILE ${baseline_dump_dir}/${prefix}_dump.sql CREATED AND COMPRESSED: $(date)"
 
   # Generate CSV dump files
