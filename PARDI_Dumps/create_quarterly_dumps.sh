@@ -50,7 +50,7 @@ echo "### Compiling previous Derwent CSVs into a new quarterly archive ###"
 derwent_weeklies=${export_base_dir}/weekly_updates/DERWENT
 derwent_quarter_archive=${export_base_dir}/past_quarter_archive/DERWENT
 rm -f ${derwent_quarter_archive}/${cur_qtr}_derwent_*_archive.csv
-derwent_export_tables="agent assignee citation examiner inventor litcitations patent"
+derwent_export_tables="agent assignee citation examiner inventor litcitation patent"
 for table in ${derwent_export_tables}; do
   echo "Archiving Derwent ${table} weekly updates..."
   cat ${derwent_weeklies}/*${table}_update.csv >> ${derwent_quarter_archive}/${cur_qtr}_derwent_${table}_archive.csv
@@ -76,20 +76,20 @@ for prefix in $data_sources; do
 
   # Generate pg_dump file
   pg_dump --section=pre-data --section=data --no-owner --no-privileges --no-tablespaces -t ${prefix}_* \
-          $exclude_string | gzip > ${baseline_dump_dir}/${prefix}_dump.sql.gz &
-  while [ "$(ps $! | grep $!)" ]; do
-    sleep 15; echo "still working to generate ${prefix} sql dump script ..."
-  done
+          $exclude_string | gzip > ${baseline_dump_dir}/${prefix}_dump.sql.gz
+#  while [ "$(ps $! | grep $!)" ]; do
+#    sleep 15; echo "still working to generate ${prefix} sql dump script ..."
+#  done
   echo "FILE ${baseline_dump_dir}/${prefix}_dump.sql CREATED AND COMPRESSED: $(date)"
 
   # Generate CSV dump files
   psql -c "DROP TABLE IF EXISTS temp_block_tables; CREATE TABLE temp_block_tables (table_name text)"
   for table in $exclude_tables ; do psql -c "INSERT INTO temp_block_tables VALUES ('${table}')" ; done
   rm -rf ${baseline_dump_dir}/${prefix}_csv_dump ; mkdir ${baseline_dump_dir}/${prefix}_csv_dump
-  psql -c "COPY (SELECT table_name FROM information_schema.tables t WHERE table_type='BASE TABLE' and table_name like '${prefix}%' and table_name not in (select * from temp_block_tables)) TO STDOUT" | $(while read -r line; do psql -c "COPY ${line} TO STDOUT" | gzip > ${baseline_dump_dir}/${prefix}_csv_dump/${line}.csv.gz ; done) &
-  while [ "$(ps $! | grep $!)" ]; do
-    sleep 15; echo "still working to generate ${prefix} csv dump script ..."
-  done
+  psql -c "COPY (SELECT table_name FROM information_schema.tables t WHERE table_type='BASE TABLE' and table_name like '${prefix}%' and table_name not in (select * from temp_block_tables)) TO STDOUT" | $(while read -r line; do psql -c "COPY ${line} TO STDOUT" | gzip > ${baseline_dump_dir}/${prefix}_csv_dump/${line}.csv.gz ; done)
+#  while [ "$(ps $! | grep $!)" ]; do
+#    sleep 15; echo "still working to generate ${prefix} csv dump script ..."
+#  done
   tar -zcvf ${baseline_dump_dir}/${prefix}_csv_dump.tar.gz ${baseline_dump_dir}/${prefix}_csv_dump
   rm -rf ${baseline_dump_dir}/${prefix}_csv_dump
   echo "FILE ${baseline_dump_dir}/${prefix}_csv_dump.sql CREATED AND COMPRESSED: $(date)"
