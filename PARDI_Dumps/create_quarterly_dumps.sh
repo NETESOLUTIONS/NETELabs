@@ -96,5 +96,4 @@ for prefix in $data_sources; do
   echo "FILE ${baseline_dump_dir}/${prefix}_csv_dump.sql CREATED AND COMPRESSED: $(date)"
 done
 
-# Record end time
-echo "FINISHED: $(date)"
+chmod -R g+w,o+r ${output_dir}
