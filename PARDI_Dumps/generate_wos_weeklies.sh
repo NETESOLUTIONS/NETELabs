@@ -1,8 +1,33 @@
+#!/usr/bin/env bash
 # VJ Davey
-# SQL script to generate weekly WOS csv data.
-# How to use:
-#  bash generate_wos_weeklies.sh "{date_string}" target_dir work_dir  -- where date_string is some string in the format YYYY-MM-DD
+if [[ $1 == "-h" ]]; then
+  cat <<'HEREDOC'
+NAME
+  generate_wos_weeklies.sh -- generate weekly WOS csv data.
 
+SYNOPSIS
+  generate_wos_weeklies.sh "{date_string}" target_dir work_dir  -- where date_string is some string in the format YYYY-MM-DD
+  generate_wos_weeklies.sh -h: display this help
+
+DESCRIPTION
+  Generates weekly WOS csv data
+HEREDOC
+  exit 1
+fi
+
+set -ex
+set -o pipefail
+
+# Get a script directory, same as by $(dirname $0)
+script_dir=${0%/*}
+#absolute_script_dir=$(cd "${script_dir}" && pwd)
+#work_dir=${1:-${absolute_script_dir}/build} # $1 with the default
+#if [[ ! -d "${work_dir}" ]]; then
+#  mkdir "${work_dir}"
+#  chmod g+w "${work_dir}"
+#fi
+#cd "${work_dir}"
+echo -e "\n## Running under ${USER}@${HOSTNAME} in ${PWD} ##\n"
 
 # Set aside the most recent wos ids that have yet to be shared
 date_string=$1; target_dir=$2; work_dir=$3
@@ -55,7 +80,10 @@ psql -c "COPY (SELECT id,a.source_id,title,type,source_filename\
 
 # Round up delete files
 echo "del_source_id" > ${target_dir}/${prefix}_wos_delete.csv
-awk -F ',' '{print $1":"$2}' ${work_dir}/*.del >> ${target_dir}/${prefix}_wos_delete.csv
+# Concatenate WOS ids from all delete files
+if compgen -G "${work_dir}/*.del" >/dev/null; then
+  awk -F ',' '{print $1":"$2}' ${work_dir}/*.del >> ${target_dir}/${prefix}_wos_delete.csv
+fi
 
 echo "Weekly WOS CSV files built."
 
