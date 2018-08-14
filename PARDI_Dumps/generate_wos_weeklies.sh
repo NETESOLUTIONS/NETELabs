@@ -82,7 +82,9 @@ psql -c "COPY (SELECT id,a.source_id,title,type,source_filename\
 echo "del_source_id" > ${target_dir}/${prefix}_wos_delete.csv
 # Concatenate WOS ids from all delete files
 if compgen -G "${work_dir}/*.del" >/dev/null; then
-  awk -F ',' '{print $1":"$2}' ${work_dir}/*.del >> ${target_dir}/${prefix}_wos_delete.csv
+  for i in ${work_dir}/*.del; do
+    awk -F ',' '{print $1":"$2}' ${i} >> ${target_dir}/${prefix}_wos_delete.csv
+  done
 fi
 
 echo "Weekly WOS CSV files built."
