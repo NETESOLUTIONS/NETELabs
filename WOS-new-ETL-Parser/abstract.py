@@ -2,9 +2,9 @@
 
 '''
 Function:   this is a class file for document abstract data to save its value in the form of an object
+https://github.com/NETESOLUTIONS/NETELabs/blob/master/WOS-new-ETL-Parser/.readme
 
 
-USAGE:  	python abstract.py -filename file_name -csv_dir csv_file_directory
 Author: 	Akshat Maltare
 Date:		03/24/2018
 Changes:
