@@ -2,7 +2,7 @@
 Function:   	This is a parser to extract the essential elements of a Record in WOS XML publications data
 
 
-USAGE:
+https://github.com/NETESOLUTIONS/NETELabs/blob/master/WOS-new-ETL-Parser/.readme
 Author: 	Akshat Maltare
 Date:		03/24/2018
 Changes:
