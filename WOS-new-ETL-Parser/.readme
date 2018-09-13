@@ -1,1 +1,8 @@
 “This code is made available under the MIT License and was developed by Akshat Maltare as part of his contributions to the PARDI project managed by NET ESolutions Corporation (NETE)” 
+
+
+This parser extracts several parts of the web of science data and inserts it into a relational database.
+
+This is a XML parser which can process millions of records within a few hours and still utilizing least possible memory. This parser can be split into n number of parallel processes as each and every thread of this parser will work independently. I have used GNU parallel library to create n parallel instances of this parser.
+
+This program can process big xml files without ocupying much of memory as it starts reading the xml file as text processing it line by line picking up first complete xml record, reads it into a SAX stream perser object and then processes it to extract all the useful information, inserts it into a table and then deletes the record. Following this approach the code makes sure that it is not occupying any additional memory used by normal xml parser or even the sax parser.
