@@ -3,8 +3,8 @@
 '''
 Function:   	This is a project to extract the WOS XML publications data and insert data directly into Data Base
 
+https://github.com/NETESOLUTIONS/NETELabs/blob/master/WOS-new-ETL-Parser/.readme
 
-USAGE:  	python main -filename file_name -csv_dir csv_file_directory
 Author: 	Akshat Maltare
 Date:		03/24/2018
 Changes:
