@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+#https://github.com/NETESOLUTIONS/NETELabs/blob/master/WOS-new-ETL-Parser/.readme
 # Author: Akshat Maltare
 # * Running N instances of parser in parallel
 # **
