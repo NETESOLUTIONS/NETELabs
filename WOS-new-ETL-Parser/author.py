@@ -4,7 +4,7 @@
 Function:   this is a class file for authors to save its value in the form of an object
 
 
-USAGE:  	python author.py -filename file_name -csv_dir csv_file_directory
+https://github.com/NETESOLUTIONS/NETELabs/blob/master/WOS-new-ETL-Parser/.readme
 Author: 	Akshat Maltare
 Date:		03/24/2018
 Changes:
